@@ -103,7 +103,7 @@
 
                     const imageData = ctx.getImageData(0, 0, img.width, img.height);
                     const data = imageData.data;
-                    let output = "// https://github.com/dashengjiadao/ImageToColor565/\n";
+                    let output = "// https://github.com/dashengjiadao/ConvertImageToColor565\n";
                     output += `// Dimensions: ${img.width}x${img.height} pixels\n`;
                     output += `// Size: ${(img.width * img.height * 2).toLocaleString()} Bytes\n\n`;
                     output += "#include <pgmspace.h>\n\n";
