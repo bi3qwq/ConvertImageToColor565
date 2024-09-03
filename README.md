@@ -1,5 +1,5 @@
-# Image to Color565 for TFT_eSPI v1.0
-Load image(jpg/png/bmp) to color565 hex array,for TFT_eSPI ES32/Arduino/Etc
+# Convert Image to Color565 for TFT_eSPI
+Convert image(jpg/png/bmp) to color565 hex array,for TFT_eSPI ES32/Arduino/Etc
 
 # How to use 
 It's very easy. 
