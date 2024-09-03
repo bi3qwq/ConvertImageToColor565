@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Color565 for TFT_eSPI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 98%;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .content{
+        }
+        .content>div{
+            width:50%;
+            float:left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Image to Color565 for TFT_eSPI v1.0</h1>
+    <h3><a href="https://github.com/dashengjiadao/ImageToColor565/" target="_blank">https://github.com/dashengjiadao/ImageToColor565/</a></h3>
+    <div  class="content">
+        <div>
+            <h1>Select Image</h1>
+            <p>Load JPG/PNG/BMP image,it can convert to COLOR565 format array.Just so easy!</p>
+            <input type="file" id="imageInput" accept="image/*">
+            <textarea id="outputText" placeholder="Conversion result will appear here..."></textarea>        
+        </div>
+        <div>
+            <h1>Arduino/ESP3 Demo</h1>
+            <br/>
+            <br/>
+            <br/>
+            <textarea>
+    #include <Arduino.h>
+    #include <TFT_eSPI.h>
+
+    #include "img1.h"
+
+    TFT_eSPI tft = TFT_eSPI();
+
+    //【use TFT_eSprite will be faster.】
+    // TFT_eSprite spr(&tft);
+
+    void setup()
+    {
+        tft.init();
+
+        //【use Default】
+        tft.fillScreen(TFT_WHITE);
+        tft.setSwapBytes(true);
+        tft.pushImage(0, 0, img1_width, img1_height, img1);  //display
+
+        //【use TFT_eSprite will be faster.】
+        // spr.createSprite(100,100);
+        // spr.fillSprite(TFT_WHITE);
+        // spr.setSwapBytes(true);
+        // spr.pushImage(0, 0, img1_width, img1_height, img1);
+        // spr.pushSprite(0, 0);   //display
+    }
+
+    void loop()
+    {
+
+    }
+
+            </textarea>
+        </div>
+    </div>
+
+    <script>
+        function toHex(value, length = 2) {
+            let hex = value.toString(16).toUpperCase();
+            return hex.padStart(length, '0');
+        }
+
+        function convertTo565(r, g, b) {
+            return ((r & 0xf8) << 8) | ((g & 0xfc) << 3) | (b >> 3);
+        }
+
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    const imageData = ctx.getImageData(0, 0, img.width, img.height);
+                    const data = imageData.data;
+                    let output = "// https://github.com/dashengjiadao/ImageToColor565/\n";
+                    output += `// Dimensions: ${img.width}x${img.height} pixels\n`;
+                    output += `// Size: ${(img.width * img.height * 2).toLocaleString()} Bytes\n\n`;
+                    output += "#include <pgmspace.h>\n\n";
+                    output += `const int img1_width=${img.width};\n`;
+                    output += `const int img1_height=${img.height};\n\n`;
+                    output += `const unsigned short img1[] PROGMEM = {\n`;
+
+                    let line = '';
+                    let pixelCount = 0;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+
+                        const pixelValue = convertTo565(r, g, b);
+                        line += `0x${toHex(pixelValue, 4)}, `;
+                        pixelCount++;
+
+                        if (pixelCount === 16) {
+                            output += line + '\n';
+                            line = '';
+                            pixelCount = 0;
+                        }
+                    }
+
+                    if (line.length > 0) {
+                        output += line + '\n';
+                    }
+
+                    output += '};\n';
+                    document.getElementById('outputText').value = output;
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+</body>
+</html>
