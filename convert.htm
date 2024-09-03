@@ -26,7 +26,7 @@
 <body>
 
     <h1>Image to Color565 for TFT_eSPI v1.0</h1>
-    <h3><a href="https://github.com/dashengjiadao/ConvertImageToColor565" target="_blank">https://github.com/dashengjiadao/ConvertImageToColor565/</a></h3>
+    <h3><a href="https://github.com/bi3qwq/ConvertImageToColor565" target="_blank">https://github.com/bi3qwq/ConvertImageToColor565</a></h3>
     <div  class="content">
         <div>
             <h1>Select Image</h1>
@@ -103,8 +103,8 @@
 
                     const imageData = ctx.getImageData(0, 0, img.width, img.height);
                     const data = imageData.data;
-                    let output = "// https://github.com/dashengjiadao/ConvertImageToColor565\n";
-                    output += `// Dimensions: ${img.width}x${img.height} pixels\n`;
+                    let output = "// https://github.com/bi3qwq/ConvertImageToColor565\n";
+                    output += `// Width x Height: ${img.width}x${img.height} pixels\n`;
                     output += `// Size: ${(img.width * img.height * 2).toLocaleString()} Bytes\n\n`;
                     output += "#include <pgmspace.h>\n\n";
                     output += `const int img1_width=${img.width};\n`;
