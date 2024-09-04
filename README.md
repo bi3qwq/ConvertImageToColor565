@@ -4,11 +4,11 @@ Convert image(jpg/png/bmp) to color565 hex array,for TFT_eSPI ES32/Arduino/Etc
 # How to use 
 It's very easy. 
 
-## 1. browser "convert.htm" page. 
+## 1. Visit https://bi3qwq.github.io/ConvertImageToColor565/. 
+
 ## 2. load Image file and save to "img1.h" file.
 ![Alt text](screen.jpg)
 ## 3. compile Arduino code.
-base 
 ```
     #include <Arduino.h>
     #include <TFT_eSPI.h>
